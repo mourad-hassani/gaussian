@@ -1,7 +1,6 @@
 from gauss_model import GaussModel
 import pandas as pd
 from torch.utils.data import DataLoader
-from utils.collate_fn import collate_fn
 from parameters import BATCH_SIZE, SHUFFLE, NUM_WORKERS, DROP_lAST, MAX_SEQ_LEN, DTYPE, DEVICE, MODEL_NAME, INPUT_FILE_PATH, OUTPUT_DIRECTORY_PATH
 from utils.create_optimizer import create_optimizer
 from transformers.tokenization_utils import BatchEncoding, PreTrainedTokenizer
@@ -20,12 +19,21 @@ class Execution():
         self.tokenizer: PreTrainedTokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, model_max_length = MAX_SEQ_LEN, use_fast = False)
 
         self.train_dataset = pd.read_csv(str(INPUT_FILE_PATH)).to_dict("records")
-        self.train_dataloader = DataLoader(self.train_dataset, collate_fn=collate_fn, batch_size=BATCH_SIZE, shuffle=SHUFFLE, num_workers=NUM_WORKERS, pin_memory=True, drop_last=DROP_lAST)
+        self.train_dataloader = DataLoader(self.train_dataset, collate_fn=self.collate_fn, batch_size=BATCH_SIZE, shuffle=SHUFFLE, num_workers=NUM_WORKERS, pin_memory=True, drop_last=DROP_lAST)
 
         self.optimizer, self.lr_scheduler = create_optimizer(model=self.model, train_steps_per_epoch=len(self.train_dataloader))
 
     def tokenize(self, batch: list[str]) -> BatchEncoding:
         return self.tokenizer(batch, padding=True, truncation=True, return_tensors="pt", max_length=MAX_SEQ_LEN)
+    
+    def collate_fn(self, data_list: list[dict]) -> BatchEncoding:
+        return BatchEncoding(
+            {
+                "sent0": self.tokenize([d["sent0"] for d in data_list]),
+                "sent1": self.tokenize([d["sent1"] for d in data_list]),
+                "score": self.tokenize([d["score"] for d in data_list]),
+            }
+        )
     
     @torch.inference_mode()
     def encode_fn(self, sentences: list[str], **_) -> GaussOutput:
@@ -34,7 +42,7 @@ class Execution():
         def my_collate_fn(batch):
             return self.tokenize(batch)
 
-        data_loader = DataLoader(sentences, collate_fn=my_collate_fn, batch_size=BATCH_SIZE, shuffle=False, num_workers=NUM_WORKERS, pin_memory=True, drop_last=False)
+        data_loader = DataLoader(sentences, collate_fn=self.collate_fn, batch_size=BATCH_SIZE, shuffle=False, num_workers=NUM_WORKERS, pin_memory=True, drop_last=False)
 
         output: list[GaussOutput] = []
         for batch in data_loader:
