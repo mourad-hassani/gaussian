@@ -6,8 +6,8 @@ from transformers.modeling_outputs import BaseModelOutput, ModelOutput
 
 @dataclass
 class GaussOutput(ModelOutput):
-    mu: torch.FloatTensor
-    std: torch.FloatTensor
+    mu: torch.FloatTensor = None
+    std: torch.FloatTensor = None
 
 
 class GaussModel(nn.Module):
