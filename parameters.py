@@ -1,3 +1,5 @@
+from pathlib import Path
+
 MODEL_NAME: str = "prajjwal1/bert-small"
 
 BATCH_SIZE: int = 64
@@ -14,3 +16,5 @@ DTYPE: str = "f16"
 SEED: int = 0
 TEMPERATURE: float = 0.05
 NUM_EVAL_STEPS: int = 100
+
+OUTPUT_DIRECTORY_PATH: Path = Path("output")

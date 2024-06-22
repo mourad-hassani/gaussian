@@ -3,11 +3,12 @@ from execution import Execution
 from utils.evaluator import Evaluator
 import torch
 from tqdm import trange, tqdm
-from parameters import EPOCHS, DEVICE, DTYPE, TEMPERATURE, NUM_EVAL_STEPS
+from parameters import EPOCHS, DEVICE, DTYPE, TEMPERATURE, NUM_EVAL_STEPS, OUTPUT_DIRECTORY_PATH
 from transformers.tokenization_utils import BatchEncoding
 from gauss_model import GaussOutput
 from utils.similarity import asymmetrical_kl_sim_mat
 import torch.nn.functional as F
+from utils.save import save_json
 
 def main():
     set_seed()
@@ -62,7 +63,7 @@ def main():
             
             if current_step % NUM_EVAL_STEPS == 0:
                 execution.model.eval()
-                
+
                 dev_score = evaluator.dev()
 
                 if best_dev_score < dev_score:
@@ -80,3 +81,19 @@ def main():
                 train_losses = []
 
                 execution.model.train()
+
+    dev_metrics = {
+        "best-epoch": best_epoch,
+        "best-step": best_step,
+        "best-dev-auc": best_dev_score,
+    }
+    save_json(dev_metrics, OUTPUT_DIRECTORY_PATH / "dev-metrics.json")
+
+    execution.model.load_state_dict(best_state_dict)
+    execution.model.eval().to(DEVICE)
+
+    metrics = execution.evaluator.eval()
+    save_json(metrics, OUTPUT_DIRECTORY_PATH / "metrics.json")
+
+if __name__ == "__main__":
+    main()
