@@ -24,8 +24,8 @@ class Execution():
 
         self.optimizer, self.lr_scheduler = create_optimizer(model=self.model, train_steps_per_epoch=len(self.train_dataloader))
 
-    def tokenize(self, tokenizer: PreTrainedTokenizer, batch: list[str]) -> BatchEncoding:
-        return tokenizer(batch, padding=True, truncation=True, return_tensors="pt", max_length=MAX_SEQ_LEN)
+    def tokenize(self, batch: list[str]) -> BatchEncoding:
+        return self.tokenizer(batch, padding=True, truncation=True, return_tensors="pt", max_length=MAX_SEQ_LEN)
     
     @torch.inference_mode()
     def encode_fn(self, sentences: list[str], **_) -> GaussOutput:
