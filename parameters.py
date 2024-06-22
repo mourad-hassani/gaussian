@@ -17,4 +17,5 @@ SEED: int = 0
 TEMPERATURE: float = 0.05
 NUM_EVAL_STEPS: int = 100
 
+INPUT_FILE_PATH: str = Path("data/train_dataset.csv")
 OUTPUT_DIRECTORY_PATH: Path = Path("output")

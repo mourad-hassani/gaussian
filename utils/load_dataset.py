@@ -1,8 +1,9 @@
 import csv
 from pathlib import Path
 import pandas as pd
+from parameters import INPUT_FILE_PATH
 
-def load_dataset(file_path: Path = Path("./data/dataset.csv"), start_index: int = 0, end_index: int = 100000) -> list[list[str]]:
+def load_dataset(file_path: Path = INPUT_FILE_PATH, start_index: int = 0, end_index: int = 100000) -> list[list[str]]:
     first_sentences: list[str] = []
     second_sentences: list[str] = []
     scores: list[float] = []

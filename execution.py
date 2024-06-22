@@ -2,7 +2,7 @@ from gauss_model import GaussModel
 import pandas as pd
 from torch.utils.data import DataLoader
 from utils.collate_fn import collate_fn
-from parameters import BATCH_SIZE, SHUFFLE, NUM_WORKERS, DROP_lAST, MAX_SEQ_LEN, DTYPE, DEVICE, MODEL_NAME
+from parameters import BATCH_SIZE, SHUFFLE, NUM_WORKERS, DROP_lAST, MAX_SEQ_LEN, DTYPE, DEVICE, MODEL_NAME, INPUT_FILE_PATH
 from utils.create_optimizer import create_optimizer
 from transformers.tokenization_utils import BatchEncoding, PreTrainedTokenizer
 from transformers import AutoTokenizer
@@ -16,10 +16,10 @@ from utils.similarity import asymmetrical_kl_sim
 
 class Execution():
     def __init__(self):
-        self.model: GaussModel = GaussModel(MODEL_NAME, True).eval().to("cuda:0")
+        self.model: GaussModel = GaussModel(MODEL_NAME, True).eval().to(DEVICE)
         self.tokenizer: PreTrainedTokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, model_max_length = MAX_SEQ_LEN, use_fast = False)
 
-        self.train_dataset = pd.read_csv("./data/dataset.csv").to_dict("records")
+        self.train_dataset = pd.read_csv(str(INPUT_FILE_PATH)).to_dict("records")
         self.train_dataloader = DataLoader(self.train_dataset, collate_fn=collate_fn, batch_size=BATCH_SIZE, shuffle=SHUFFLE, num_workers=NUM_WORKERS, pin_memory=True, drop_last=DROP_lAST)
 
         self.optimizer, self.lr_scheduler = create_optimizer(model=self.model, train_steps_per_epoch=len(self.train_dataloader))
@@ -30,8 +30,11 @@ class Execution():
     @torch.inference_mode()
     def encode_fn(self, sentences: list[str], **_) -> GaussOutput:
         self.model.eval()
+        
+        def my_collate_fn(batch):
+            return self.tokenize(batch)
 
-        data_loader = DataLoader(sentences, collate_fn=self.tokenize, batch_size=BATCH_SIZE, shuffle=False, num_workers=NUM_WORKERS, pin_memory=True, drop_last=False)
+        data_loader = DataLoader(sentences, collate_fn=my_collate_fn, batch_size=BATCH_SIZE, shuffle=False, num_workers=NUM_WORKERS, pin_memory=True, drop_last=False)
 
         output: list[GaussOutput] = []
         for batch in data_loader:
