@@ -2,7 +2,7 @@ from gauss_model import GaussModel
 import pandas as pd
 from torch.utils.data import DataLoader
 from utils.collate_fn import collate_fn
-from parameters import BATCH_SIZE, SHUFFLE, NUM_WORKERS, DROP_lAST, MAX_SEQ_LEN, DTYPE, DEVICE, MODEL_NAME, INPUT_FILE_PATH
+from parameters import BATCH_SIZE, SHUFFLE, NUM_WORKERS, DROP_lAST, MAX_SEQ_LEN, DTYPE, DEVICE, MODEL_NAME, INPUT_FILE_PATH, OUTPUT_DIRECTORY_PATH
 from utils.create_optimizer import create_optimizer
 from transformers.tokenization_utils import BatchEncoding, PreTrainedTokenizer
 from transformers import AutoTokenizer
@@ -50,7 +50,7 @@ class Execution():
         return output
 
     def log(self, metrics: dict) -> None:
-        log_info(metrics, self.args.output_dir / "log.csv")
+        log_info(metrics, OUTPUT_DIRECTORY_PATH / "log.csv")
         tqdm.write(
             f"epoch: {metrics['epoch']} \t"
             f"step: {metrics['step']} \t"
