@@ -1,4 +1,4 @@
-from utils import set_seed
+from utils.set_seed import set_seed
 from execution import Execution
 from utils.evaluator import Evaluator
 import torch
