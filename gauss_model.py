@@ -1,9 +1,10 @@
+from dataclasses import dataclass
 import torch
 import torch.nn as nn
 from transformers import AutoModel, PreTrainedModel
 from transformers.modeling_outputs import BaseModelOutput, ModelOutput
 
-
+@dataclass
 class GaussOutput(ModelOutput):
     mu: torch.FloatTensor
     std: torch.FloatTensor
