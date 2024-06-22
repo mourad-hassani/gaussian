@@ -92,9 +92,10 @@ def main():
     save_json(dev_metrics, OUTPUT_DIRECTORY_PATH / "dev-metrics.json")
 
     execution.model.load_state_dict(best_state_dict)
+    torch.save(execution.model.state_dict(), "temporal_bert.pth")
     execution.model.eval().to(DEVICE)
 
-    metrics = execution.evaluator.eval()
+    metrics = evaluator.eval()
     save_json(metrics, OUTPUT_DIRECTORY_PATH / "metrics.json")
 
 if __name__ == "__main__":
