@@ -75,7 +75,7 @@ def main():
                     "epoch": epoch,
                     "step": current_step,
                     "loss": sum(train_losses) / len(train_losses),
-                    "dev-auc": dev_score,
+                    "dev_score": dev_score,
                 }
                 execution.log(val_metrics)
                 train_losses = []

@@ -55,7 +55,7 @@ class Execution():
             f"epoch: {metrics['epoch']} \t"
             f"step: {metrics['step']} \t"
             f"loss: {metrics['loss']:2.6f}       \t"
-            f"dev-auc: {metrics['dev-auc']:.4f}"
+            f"dev_score: {metrics['dev_score']:.4f}"
         )
     
     def clone_state_dict(self) -> dict:
