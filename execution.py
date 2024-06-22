@@ -11,7 +11,7 @@ from gauss_model import GaussOutput
 from typing import Callable
 import torch
 from utils.log_info import log_info
-import tqdm
+from tqdm import tqdm
 from utils.similarity import asymmetrical_kl_sim
 
 class Execution():
