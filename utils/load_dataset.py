@@ -15,4 +15,5 @@ def load_dataset(file_path: Path = INPUT_FILE_PATH, start_index: int = 0, end_in
                 first_sentences.append(row[0])
                 second_sentences.append(row[1])
                 scores.append(row[2])
+            idx += 1
     return [first_sentences, second_sentences, scores]
