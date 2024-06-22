@@ -42,7 +42,7 @@ class Execution():
         def my_collate_fn(batch):
             return self.tokenize(batch)
 
-        data_loader = DataLoader(sentences, collate_fn=self.collate_fn, batch_size=BATCH_SIZE, shuffle=False, num_workers=NUM_WORKERS, pin_memory=True, drop_last=False)
+        data_loader = DataLoader(sentences, collate_fn=my_collate_fn, batch_size=BATCH_SIZE, shuffle=False, num_workers=NUM_WORKERS, pin_memory=True, drop_last=False)
 
         output: list[GaussOutput] = []
         for batch in data_loader:
