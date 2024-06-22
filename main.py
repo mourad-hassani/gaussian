@@ -6,7 +6,7 @@ from tqdm import trange, tqdm
 from parameters import EPOCHS, DEVICE, DTYPE, TEMPERATURE, NUM_EVAL_STEPS, OUTPUT_DIRECTORY_PATH
 from transformers.tokenization_utils import BatchEncoding
 from gauss_model import GaussOutput
-from utils.similarity import asymmetrical_kl_sim_mat
+from utils.similarity import asymmetrical_kl_sim_mat, asymmetrical_kl_sim
 import torch.nn as nn
 from utils.save import save_json
 
@@ -42,7 +42,7 @@ def main():
                 sent0_out: GaussOutput = execution.model.forward(**batch.sent0)
                 sent1_out: GaussOutput = execution.model.forward(**batch.sent1)
 
-            sim_mat: torch.FloatTensor = asymmetrical_kl_sim_mat(sent0_out.mu, sent0_out.std, sent1_out.mu, sent1_out.std)
+            sim_mat: torch.FloatTensor = asymmetrical_kl_sim(sent0_out.mu, sent0_out.std, sent1_out.mu, sent1_out.std)
             sim_mat = sim_mat / TEMPERATURE
 
             # batch_size = sim_mat.size(0)
