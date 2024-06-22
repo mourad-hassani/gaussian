@@ -7,7 +7,7 @@ from parameters import EPOCHS, DEVICE, DTYPE, TEMPERATURE, NUM_EVAL_STEPS, OUTPU
 from transformers.tokenization_utils import BatchEncoding
 from gauss_model import GaussOutput
 from utils.similarity import asymmetrical_kl_sim_mat
-import torch.nn.functional as F
+import torch.nn as nn
 from utils.save import save_json
 
 def main():
@@ -45,9 +45,11 @@ def main():
             sim_mat: torch.FloatTensor = asymmetrical_kl_sim_mat(sent0_out.mu, sent0_out.std, sent1_out.mu, sent1_out.std)
             sim_mat = sim_mat / TEMPERATURE
 
-            batch_size = sim_mat.size(0)
-            labels = torch.arange(batch_size).to(DEVICE, non_blocking=True)
-            loss = F.cross_entropy(sim_mat, labels)
+            # batch_size = sim_mat.size(0)
+            # labels = torch.arange(batch_size).to(DEVICE, non_blocking=True)
+            # loss = F.cross_entropy(sim_mat, labels)
+            criterion = nn.MSELoss()
+            loss = criterion(sim_mat, batch.score)
 
             train_losses.append(loss.item())
 

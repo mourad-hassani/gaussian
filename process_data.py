@@ -9,7 +9,7 @@ with input_file_path.open("r") as f:
     input_data = json.load(f)
 
     with output_file_path.open("w") as g:
-        writer = csv.writer(g, delimiter=";")
+        writer = csv.writer(g, delimiter=",")
         writer.writerow(["sent0", "sent1", "score"])
         for line in input_data:
             line[0] = line[0].replace(";", "")
