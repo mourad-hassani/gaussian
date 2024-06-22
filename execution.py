@@ -18,7 +18,7 @@ class Execution():
         self.model: GaussModel = GaussModel(MODEL_NAME, True).eval().to(DEVICE)
         self.tokenizer: PreTrainedTokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, model_max_length = MAX_SEQ_LEN, use_fast = False)
 
-        self.train_dataset = pd.read_csv(str(INPUT_FILE_PATH)).to_dict("records")
+        self.train_dataset = pd.read_csv(str(INPUT_FILE_PATH), delimiter=";").to_dict("records")
         self.train_dataloader = DataLoader(self.train_dataset, collate_fn=self.collate_fn, batch_size=BATCH_SIZE, shuffle=SHUFFLE, num_workers=NUM_WORKERS, pin_memory=True, drop_last=DROP_lAST)
 
         self.optimizer, self.lr_scheduler = create_optimizer(model=self.model, train_steps_per_epoch=len(self.train_dataloader))
