@@ -9,4 +9,6 @@ model.load_state_dict(torch.load('temporal_bert.pth', map_location=torch.device(
 execution = Execution()
 
 evaluator = Evaluator(sim_fn=execution.sim_fn)
-print(evaluator.test())
+output = evaluator.test()
+for o in output:
+    print(f"{o.sent0}, {o.sent1}, {o.similarity}")
