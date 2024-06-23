@@ -21,7 +21,7 @@ class EvaluatorBase:
     
 class TestEvaluatorBase:
     def __init__(self, dataset_path: Path = INPUT_FILE_PATH):
-        self.sentences1, self.sentences2, self.scores = load_dataset(dataset_path, start_index=-10, end_index=-1)
+        self.sentences1, self.sentences2, self.scores = load_dataset(dataset_path, start_index=100001, end_index=(100001+64))
         assert len(self.sentences1) == len(self.sentences2) == len(self.scores)
 
     def __call__(self, sim_fn: Callable[[list[str], list[str]], list[float]]) -> float:
