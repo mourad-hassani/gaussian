@@ -10,5 +10,8 @@ execution = Execution()
 
 evaluator = Evaluator(sim_fn=execution.sim_fn)
 output = evaluator.test()
-for sent0, sent1, score in output["sent0"], output["sent1"], output["score"]:
-    print(f"{sent0}, {sent1}, {score}")
+
+for sent0 in output["sent0"]:
+    for sent1 in output["sent1"]:
+        for score in output["score"]:
+            print(f"{sent0}, {sent1}, {score}")
