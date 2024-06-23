@@ -9,9 +9,9 @@ from scipy.stats import spearmanr
 class EvaluatorBase:
     def __init__(self, dataset_path: Path = INPUT_FILE_PATH, split: str = "train"):
         if split == "train":
-            self.sentences1, self.sentences2, self.scores = load_dataset(dataset_path)
+            self.sentences1, self.sentences2, self.scores = load_dataset(dataset_path, split="train")
         elif split == "dev":
-            self.sentences1, self.sentences2, self.scores = load_dataset(dataset_path, start_index=100001, end_index=101000)
+            self.sentences1, self.sentences2, self.scores = load_dataset(dataset_path, split="dev")
         assert len(self.sentences1) == len(self.sentences2) == len(self.scores)
 
     def __call__(self, sim_fn: Callable[[list[str], list[str]], list[float]]) -> float:
@@ -21,7 +21,7 @@ class EvaluatorBase:
     
 class TestEvaluatorBase:
     def __init__(self, dataset_path: Path = INPUT_FILE_PATH):
-        self.sentences1, self.sentences2, self.scores = load_dataset(dataset_path, start_index=100001, end_index=(100001+64))
+        self.sentences1, self.sentences2, self.scores = load_dataset(dataset_path, split="test")
         assert len(self.sentences1) == len(self.sentences2) == len(self.scores)
 
     def __call__(self, sim_fn: Callable[[list[str], list[str]], list[float]]) -> float:
