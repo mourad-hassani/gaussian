@@ -10,5 +10,5 @@ execution = Execution()
 
 evaluator = Evaluator(sim_fn=execution.sim_fn)
 output = evaluator.test()
-for o in output:
-    print(f"{o.sent0}, {o.sent1}, {o.similarity}")
+for sent0, sent1, score in output["sent0"], output["sent1"], output["score"]:
+    print(f"{sent0}, {sent1}, {score}")
