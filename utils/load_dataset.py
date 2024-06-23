@@ -25,8 +25,8 @@ def load_dataset(file_path: Path = INPUT_FILE_PATH, split: str = "train") -> lis
         idx: int = 0
         for row in reader:
             if start_index <= idx <= end_index:
-                first_sentences.append(row[1])
-                second_sentences.append(row[2])
-                scores.append(row[3])
+                first_sentences.append(row[0])
+                second_sentences.append(row[1])
+                scores.append(row[2])
             idx += 1
     return [first_sentences, second_sentences, scores]
