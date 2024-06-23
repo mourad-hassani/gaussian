@@ -16,12 +16,12 @@ def load_dataset(file_path: Path = INPUT_FILE_PATH, split: str = "train") -> lis
     with file_path.open("r") as f:        
         if split == "train":
             start_index = 0
-            end_index = int(row_count * 0.8)
-        elif split == "dev":
-            start_index = int(row_count * 0.8) + 1
             end_index = int(row_count * 0.9)
-        elif split == "test":
+        elif split == "dev":
             start_index = int(row_count * 0.9) + 1
+            end_index = int(row_count * 0.91)
+        elif split == "test":
+            start_index = int(row_count * 0.91) + 1
             end_index = int(row_count)
         
         idx: int = 0
