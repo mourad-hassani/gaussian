@@ -12,8 +12,8 @@ def load_dataset(file_path: Path = INPUT_FILE_PATH, start_index: int = 0, end_in
         idx: int = 0
         for row in reader:
             if start_index <= idx <= end_index:
-                first_sentences.append(row[0])
-                second_sentences.append(row[1])
-                scores.append(row[2])
+                first_sentences.append(row[1])
+                second_sentences.append(row[2])
+                scores.append(row[3])
             idx += 1
     return [first_sentences, second_sentences, scores]
