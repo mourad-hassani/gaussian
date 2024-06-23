@@ -45,5 +45,5 @@ class Evaluator:
         return self.dev_evaluator(self.sim_fn)
     
     @torch.inference_mode()
-    def test(self) -> float:
+    def test(self) -> dict:
         return self.test_evaluator(self.sim_fn)
