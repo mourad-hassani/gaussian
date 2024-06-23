@@ -7,12 +7,13 @@ def load_dataset(file_path: Path = INPUT_FILE_PATH, split: str = "train") -> lis
     first_sentences: list[str] = []
     second_sentences: list[str] = []
     scores: list[float] = []
+    row_count = 0
     with file_path.open("r") as f:
         count_reader = csv.reader(f)
-        row_count: int = 0
         for row in count_reader:
             row_count += 1
-            
+    
+    with file_path.open("r") as f:        
         if split == "train":
             start_index = 0
             end_index = int(row_count * 0.8)
@@ -23,7 +24,6 @@ def load_dataset(file_path: Path = INPUT_FILE_PATH, split: str = "train") -> lis
             start_index = int(row_count * 0.9) + 1
             end_index = int(row_count)
         
-        print(f"{start_index}, {end_index}")
         idx: int = 0
         reader = csv.reader(f)
         for row in reader:
