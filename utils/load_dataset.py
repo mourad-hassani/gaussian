@@ -22,6 +22,8 @@ def load_dataset(file_path: Path = INPUT_FILE_PATH, split: str = "train") -> lis
         elif split == "test":
             start_index = int(row_count * 0.9) + 1
             end_index = int(row_count)
+        
+        print(f"{start_index}, {end_index}")
         idx: int = 0
         for row in reader:
             if start_index <= idx <= end_index:
