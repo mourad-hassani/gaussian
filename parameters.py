@@ -5,7 +5,7 @@ MODEL_NAME: str = "prajjwal1/bert-small"
 
 BATCH_SIZE: int = 64
 SHUFFLE: bool = True
-NUM_WORKERS: int = 2
+NUM_WORKERS: int = 4
 DROP_lAST: bool = True
 LR: float = 3e-5
 WEIGHT_DECAY: float = 1e-2
