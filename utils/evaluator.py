@@ -14,10 +14,6 @@ class EvaluatorBase:
             self.sentences1, self.sentences2, self.scores = load_dataset(dataset_path, split="dev")
         assert len(self.sentences1) == len(self.sentences2) == len(self.scores)
 
-        print(split)
-        print(self.sentences1)
-        print(self.sentences2)
-
     def __call__(self, sim_fn: Callable[[list[str], list[str]], list[float]]) -> float:
         similarities = sim_fn(self.sentences1, self.sentences2)
         spearman = float(spearmanr(self.scores, similarities)[0]) * 100
